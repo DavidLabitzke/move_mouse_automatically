@@ -11,4 +11,4 @@ while True:
     time.sleep(RESET_TIME)
     new_x = randint(0, width)
     new_y = randint(0, height)
-    pyautogui.moveTo(new_x, new_y)
+    pyautogui.moveTo(new_x, new_y, duration=RESET_TIME)
