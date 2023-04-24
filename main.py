@@ -2,7 +2,7 @@ import pyautogui
 from random import randint
 import time
 
-RESET_TIME = 10
+RESET_TIME = 5
 
 width = pyautogui.size().width
 height = pyautogui.size().height
