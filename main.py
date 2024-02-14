@@ -4,11 +4,15 @@ import time
 
 RESET_TIME = 5
 
-width = pyautogui.size().width
-height = pyautogui.size().height
+max_width = round(pyautogui.size().width * 0.9)
+max_height = round(pyautogui.size().height * 0.9)
+
+min_width = round(pyautogui.size().width - max_width)
+min_height = round(pyautogui.size().height - max_height)
+
 
 while True:
     time.sleep(RESET_TIME)
-    new_x = randint(0, width)
-    new_y = randint(0, height)
+    new_x = randint(min_width, max_width)
+    new_y = randint(min_height, max_height)
     pyautogui.moveTo(new_x, new_y, duration=RESET_TIME)
