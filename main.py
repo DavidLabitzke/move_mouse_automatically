@@ -31,7 +31,7 @@ def handle_mouse_movement():
     global mouse_new_coordinates
     mouse_current_pos = pyautogui.position()
     mouse_current_x, mouse_current_y = mouse_current_pos[0], mouse_current_pos[1]
-    pos_needs_changed = mouse_new_coordinates is (None, None) or mouse_new_coordinates == mouse_current_pos
+    pos_needs_changed = mouse_new_coordinates == (None, None) or mouse_new_coordinates == mouse_current_pos
     if pos_needs_changed:
         mouse_new_coordinates = get_new_mouse_coordinates()
         mouse_new_x, mouse_new_y = mouse_new_coordinates[0], mouse_new_coordinates[1]
