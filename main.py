@@ -3,7 +3,12 @@ import keyboard
 from random import randint
 import time
 
-RESET_TIME = 0.1
+# Global Variables
+mouse_new_coordinates = (None, None)
+x_increment = None
+y_increment = None
+
+RESET_TIME = 0.02
 
 max_width = round(pyautogui.size().width * 0.9)
 max_height = round(pyautogui.size().height * 0.9)
@@ -22,17 +27,20 @@ def move_mouse(new_x, new_y):
     pyautogui.moveTo(new_x, new_y, duration=RESET_TIME)
 
 
-def on_key_event(e):
-    if e.name == "esc":
-        print("escape key pressed")
-        return False
-
+def handle_mouse_movement():
+    global mouse_new_coordinates
+    mouse_current_pos = pyautogui.position()
+    mouse_current_x, mouse_current_y = mouse_current_pos[0], mouse_current_pos[1]
+    pos_needs_changed = mouse_new_coordinates is (None, None) or mouse_new_coordinates == mouse_current_pos
+    if pos_needs_changed:
+        mouse_new_coordinates = get_new_mouse_coordinates()
+        mouse_new_x, mouse_new_y = mouse_new_coordinates[0], mouse_new_coordinates[1]
+    move_mouse(*mouse_new_coordinates)
 
 def main():
     try:
         while not keyboard.is_pressed("esc"):
-            new_coords = get_new_mouse_coordinates()
-            move_mouse(*new_coords)
+            handle_mouse_movement()
             time.sleep(RESET_TIME)
     except KeyboardInterrupt:
         print("keyboard interrupt")
