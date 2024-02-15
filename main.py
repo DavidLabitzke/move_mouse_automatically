@@ -2,13 +2,13 @@ import pyautogui
 import keyboard
 from random import randint
 import time
+import math
 
 # Global Variables
 mouse_new_coordinates = (None, None)
-x_increment = None
-y_increment = None
 
 RESET_TIME = 0.02
+MINIMUM_DISTANCE_THRESHOLD = 20
 
 max_width = round(pyautogui.size().width * 0.9)
 max_height = round(pyautogui.size().height * 0.9)
@@ -23,19 +23,27 @@ def get_new_mouse_coordinates():
     return new_x, new_y
 
 
-def move_mouse(new_x, new_y):
-    pyautogui.moveTo(new_x, new_y, duration=RESET_TIME)
-
-
 def handle_mouse_movement():
     global mouse_new_coordinates
+
     mouse_current_pos = pyautogui.position()
     mouse_current_x, mouse_current_y = mouse_current_pos[0], mouse_current_pos[1]
+
     pos_needs_changed = mouse_new_coordinates == (None, None) or mouse_new_coordinates == mouse_current_pos
-    if pos_needs_changed:
+    if not pos_needs_changed:
+        dx = mouse_new_coordinates[0] - mouse_current_x
+        dy = mouse_new_coordinates[1] - mouse_current_y
+        total_distance = math.sqrt(dx ** 2 + dy ** 2)
+        move_speed = 10
+        if total_distance < MINIMUM_DISTANCE_THRESHOLD:
+            total_distance /= 1000
+            pyautogui.moveRel(dx, dy, duration=total_distance / move_speed)
+        else:
+            pyautogui.move(dx / move_speed, dy / move_speed)
+
+    else:
         mouse_new_coordinates = get_new_mouse_coordinates()
-        mouse_new_x, mouse_new_y = mouse_new_coordinates[0], mouse_new_coordinates[1]
-    move_mouse(*mouse_new_coordinates)
+
 
 def main():
     try:
@@ -43,9 +51,8 @@ def main():
             handle_mouse_movement()
             time.sleep(RESET_TIME)
     except KeyboardInterrupt:
-        print("keyboard interrupt")
+        pass
 
 
 if __name__ == '__main__':
     main()
-    print("Successfully aborted")
