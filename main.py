@@ -8,7 +8,7 @@ import math
 mouse_new_coordinates = (None, None)
 
 RESET_TIME = 0.02
-MINIMUM_DISTANCE_THRESHOLD = 20
+MINIMUM_DISTANCE_THRESHOLD = 100
 
 max_width = round(pyautogui.size().width * 0.9)
 max_height = round(pyautogui.size().height * 0.9)
